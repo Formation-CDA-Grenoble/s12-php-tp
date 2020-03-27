@@ -1,27 +1,4 @@
-<?php
-
-// Lit les variables d'environnement
-$_ENV = parse_ini_file('.env');
-
-// Charge les fonctions permettant d'exploiter l'API de The Movie DB
-include 'api/tmdb.php';
-
-if (isset($_GET['show-id'])) {
-    $currentTvShowId = $_GET['show-id'];
-} else {
-    $index = rand(0, count(MY_TV_SHOWS) - 1);
-    $currentTvShowId = MY_TV_SHOWS[$index];
-}
-
-// Récupère les informations d'une série télévisée
-$allTvShows = [];
-foreach (MY_TV_SHOWS as $tvShowId) {
-    $allTvShows[$tvShowId] = getTvShow($tvShowId);
-}
-
-$currentTvShow = $allTvShows[$currentTvShowId];
-
-?>
+<?php include 'templates/tv-shows.tpl.php' ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +11,7 @@ $currentTvShow = $allTvShows[$currentTvShowId];
 </head>
 <body>
     <div class="container">
-        <form>
+        <form action="tv-show.php">
             <select name="show-id">
                 <?php foreach($allTvShows as $tvShow): ?>
                 <option
@@ -49,27 +26,6 @@ $currentTvShow = $allTvShows[$currentTvShowId];
                 Show TV series
             </button>
         </form>
-        <div class="jumbotron">
-            <h1>
-                <?= $currentTvShow->name ?>
-                <small>
-                    <a href="<?= $currentTvShow->homepage ?>">
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </small>
-            </h1>
-            <div>
-                <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<?= $currentTvShow->poster_path ?>" />
-            </div>
-        </div>
-        <h2>Seasons</h2>
-        <ul class="list-group">
-            <?php foreach($currentTvShow->seasons as $season): ?>
-            <li class="list-group-item">
-                Season <?= $season->season_number ?>: <?= $season->name ?>
-            </li>
-            <?php endforeach; ?>
-        </ul>
     </div>
 </body>
 </html>
