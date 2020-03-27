@@ -6,8 +6,16 @@ $_ENV = parse_ini_file('.env');
 // Charge les fonctions permettant d'exploiter l'API de The Movie DB
 include 'api/tmdb.php';
 
+if (isset($_GET['show-id'])) {
+    $tvShowId = $_GET['show-id'];
+} else {
+    $index = rand(0, count(MY_TV_SHOWS) - 1);
+    echo $index;
+    $tvShowId = MY_TV_SHOWS[$index];
+}
+
 // Récupère les informations d'une série télévisée
-$tvShow = getTvShow(MY_TV_SHOWS[1]);
+$tvShow = getTvShow($tvShowId);
 
 ?>
 
@@ -22,12 +30,26 @@ $tvShow = getTvShow(MY_TV_SHOWS[1]);
 </head>
 <body>
     <div class="container">
+        <form>
+            <select name="show-id">
+                <?php foreach(MY_TV_SHOWS as $tvShowId): ?>
+                <option value="<?= $tvShowId ?>">
+                    <?= $tvShowId ?>
+                </option>
+                <?php endforeach; ?> 
+            </select>
+            <button type="submit" class="btn btn-primary">
+                Show TV series
+            </button>
+        </form>
         <div class="jumbotron">
             <h1>
                 <?= $tvShow->name ?>
-                <a href="<?= $tvShow->homepage ?>">
-                    <i class="fas fa-external-link-alt"></i>
-                </a>
+                <small>
+                    <a href="<?= $tvShow->homepage ?>">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </small>
             </h1>
             <div>
                 <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<?= $tvShow->poster_path ?>" />
