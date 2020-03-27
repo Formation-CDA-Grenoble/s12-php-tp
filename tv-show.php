@@ -32,6 +32,9 @@
             </li>
             <?php endforeach; ?>
         </ul>
+        <a href="index.php" class="btn btn-secondary">
+            Back to list
+        </a>
     </div>
 </body>
 </html>
