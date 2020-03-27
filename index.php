@@ -14,12 +14,12 @@ if (isset($_GET['show-id'])) {
 }
 
 // Récupère les informations d'une série télévisée
-$currentTvShow = getTvShow($currentTvShowId);
-
 $allTvShows = [];
 foreach (MY_TV_SHOWS as $tvShowId) {
-    array_push($allTvShows, getTvShow($tvShowId));
+    $allTvShows[$tvShowId] = getTvShow($tvShowId);
 }
+
+$currentTvShow = $allTvShows[$currentTvShowId];
 
 ?>
 
