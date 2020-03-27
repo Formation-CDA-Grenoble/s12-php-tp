@@ -7,17 +7,28 @@ $_ENV = parse_ini_file('.env');
 include 'api/tmdb.php';
 
 // Récupère les informations d'une série télévisée
-$tvShow = getTvShow(MY_TV_SHOWS[0]);
+$tvShow = getTvShow(MY_TV_SHOWS[1]);
 
-// Permet de visualiser les variables d'environnement
-// Décommenter le code ci-dessous pour visualiser
-    // var_dump($_ENV); die();
+?>
 
-// Permet de visualiser le nom de la série télévisée choisie
-// Décommenter le code ci-dessous pour visualiser
-    // var_dump($tvShow->name); die();
-
-// Permet de visualiser toutes les saisons de la série télévisée choisie
-// Décommenter le code ci-dessous pour visualiser
-    // var_dump($tvShow->seasons); die();
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My beautiful app</title>
+</head>
+<body>
+    <h1><?= $tvShow->name ?></h1>
+    <a href="<?= $tvShow->homepage ?>">Homepage</a>
+    <div>
+        <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<?= $tvShow->poster_path ?>" />
+    </div>
+    <h2>Seasons</h2>
+    <ul>
+        <?php foreach($tvShow->seasons as $season): ?>
+        <li>Season <?= $season->season_number ?>: <?= $season->name ?></li>
+        <?php endforeach; ?>
+    </ul>
+</body>
+</html>
