@@ -7,15 +7,14 @@ $_ENV = parse_ini_file('.env');
 include 'api/tmdb.php';
 
 if (isset($_GET['show-id'])) {
-    $tvShowId = $_GET['show-id'];
+    $currentTvShowId = $_GET['show-id'];
 } else {
     $index = rand(0, count(MY_TV_SHOWS) - 1);
-    echo $index;
-    $tvShowId = MY_TV_SHOWS[$index];
+    $currentTvShowId = MY_TV_SHOWS[$index];
 }
 
 // Récupère les informations d'une série télévisée
-$tvShow = getTvShow($tvShowId);
+$tvShow = getTvShow($currentTvShowId);
 
 ?>
 
@@ -33,7 +32,10 @@ $tvShow = getTvShow($tvShowId);
         <form>
             <select name="show-id">
                 <?php foreach(MY_TV_SHOWS as $tvShowId): ?>
-                <option value="<?= $tvShowId ?>">
+                <option
+                    value="<?= $tvShowId ?>"
+                    <?php if ($tvShowId == $currentTvShowId) echo 'selected="selected"' ?>
+                >
                     <?= $tvShowId ?>
                 </option>
                 <?php endforeach; ?> 
