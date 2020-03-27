@@ -14,7 +14,12 @@ if (isset($_GET['show-id'])) {
 }
 
 // Récupère les informations d'une série télévisée
-$tvShow = getTvShow($currentTvShowId);
+$currentTvShow = getTvShow($currentTvShowId);
+
+$allTvShows = [];
+foreach (MY_TV_SHOWS as $tvShowId) {
+    array_push($allTvShows, getTvShow($tvShowId));
+}
 
 ?>
 
@@ -31,12 +36,12 @@ $tvShow = getTvShow($currentTvShowId);
     <div class="container">
         <form>
             <select name="show-id">
-                <?php foreach(MY_TV_SHOWS as $tvShowId): ?>
+                <?php foreach($allTvShows as $tvShow): ?>
                 <option
-                    value="<?= $tvShowId ?>"
-                    <?php if ($tvShowId == $currentTvShowId) echo 'selected="selected"' ?>
+                    value="<?= $tvShow->id ?>"
+                    <?php if ($tvShow->id == $currentTvShowId) echo 'selected="selected"' ?>
                 >
-                    <?= $tvShowId ?>
+                    <?= $tvShow->name ?>
                 </option>
                 <?php endforeach; ?> 
             </select>
@@ -46,20 +51,20 @@ $tvShow = getTvShow($currentTvShowId);
         </form>
         <div class="jumbotron">
             <h1>
-                <?= $tvShow->name ?>
+                <?= $currentTvShow->name ?>
                 <small>
-                    <a href="<?= $tvShow->homepage ?>">
+                    <a href="<?= $currentTvShow->homepage ?>">
                         <i class="fas fa-external-link-alt"></i>
                     </a>
                 </small>
             </h1>
             <div>
-                <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<?= $tvShow->poster_path ?>" />
+                <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2<?= $currentTvShow->poster_path ?>" />
             </div>
         </div>
         <h2>Seasons</h2>
         <ul class="list-group">
-            <?php foreach($tvShow->seasons as $season): ?>
+            <?php foreach($currentTvShow->seasons as $season): ?>
             <li class="list-group-item">
                 Season <?= $season->season_number ?>: <?= $season->name ?>
             </li>
